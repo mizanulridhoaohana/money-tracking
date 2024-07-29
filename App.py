@@ -1,26 +1,25 @@
 import streamlit as st
 from auth import Auth
-from catat_pengeluaran import CatatPengeluaran
 from riwayat_pengeluaran import RiwayatPengeluaran
+from catat_pengeluaran import CatatPengeluaran
 
 auth = Auth()
 
 def main():
     st.title('Aplikasi Pengeluaran Uang')
 
-    # Initialize session state variables
+    # Initialize session state
     if 'email' not in st.session_state:
         st.session_state.email = None
 
     if 'mode' not in st.session_state:
         st.session_state.mode = 'login'
 
-    # Manage modes and show relevant pages
     if st.session_state.email is None:
-        if st.session_state.mode == 'login':
-            login()
-        elif st.session_state.mode == 'create_account':
+        if st.session_state.mode == 'create_account':
             create_account()
+        elif st.session_state.mode == 'login':
+            login()
         elif st.session_state.mode == 'logged_in':
             app()
     else:
@@ -36,13 +35,11 @@ def login():
         if result == "Login successful.":
             st.session_state.email = email
             st.session_state.mode = 'logged_in'
-            st.experimental_rerun()
         else:
             st.error(result)
 
     if st.button('Belum memiliki akun?'):
         st.session_state.mode = 'create_account'
-        st.experimental_rerun()
 
 def create_account():
     st.subheader('Create Account')
@@ -55,13 +52,11 @@ def create_account():
         if result == "Account created successfully.":
             st.success(result)
             st.session_state.mode = 'login'
-            st.experimental_rerun()
         else:
             st.error(result)
 
     if st.button('Back to Login'):
         st.session_state.mode = 'login'
-        st.experimental_rerun()
 
 def app():
     st.sidebar.subheader('Menu')
@@ -74,7 +69,6 @@ def app():
     elif menu == 'Logout':
         st.session_state.email = None
         st.session_state.mode = 'login'
-        st.experimental_rerun()
 
 if __name__ == '__main__':
     main()
