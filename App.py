@@ -6,19 +6,25 @@ from auth import Auth
 auth = Auth()
 
 def main():
-    st.title('Hemat WOYYY!! Catet disini😂')
+    st.title('Aplikasi Pengeluaran Uang')
 
+    # Initialize session state
     if 'email' not in st.session_state:
         st.session_state.email = None
 
     if 'mode' not in st.session_state:
         st.session_state.mode = 'login'
 
+    query_params = st.query_params  # Use query_params to get current state
+
     if st.session_state.email is None:
-        if st.session_state.mode == 'login':
+        if query_params.get('mode') == 'create_account':
+            st.session_state.mode = 'create_account'
+            create_account()  # Ensure function is called
+        elif st.session_state.mode == 'login':
             login()
-        elif st.session_state.mode == 'create_account':
-            create_account()
+        elif st.session_state.mode == 'logged_in':
+            app()
     else:
         app()
 
@@ -31,14 +37,16 @@ def login():
         result = auth.login(email, password)
         if result == "Login successful.":
             st.session_state.email = email
-            st.success(f'Welcome, {email}!')
             st.session_state.mode = 'logged_in'
-            st.experimental_rerun()
+            st.query_params.update({'mode': 'logged_in'})  # Update query parameters
+            st.experimental_rerun()  # Force rerun to reflect changes
         else:
             st.error(result)
 
     if st.button('Belum memiliki akun?'):
         st.session_state.mode = 'create_account'
+        st.query_params.update({'mode': 'create_account'})  # Update query parameters
+        st.experimental_rerun()  # Force rerun to show create_account form
 
 def create_account():
     st.subheader('Create Account')
@@ -51,11 +59,15 @@ def create_account():
         if result == "Account created successfully.":
             st.success(result)
             st.session_state.mode = 'login'
+            st.query_params.update({'mode': 'login'})  # Update query parameters
+            st.experimental_rerun()  # Force rerun to go back to login
         else:
             st.error(result)
 
     if st.button('Back to Login'):
         st.session_state.mode = 'login'
+        st.query_params.update({'mode': 'login'})  # Update query parameters
+        st.experimental_rerun()  # Force rerun to go back to login
 
 def app():
     st.sidebar.subheader('Menu')
@@ -68,10 +80,8 @@ def app():
     elif menu == 'Logout':
         st.session_state.email = None
         st.session_state.mode = 'login'
-        st.experimental_rerun()
+        st.query_params.update({'mode': 'login'})  # Update query parameters
+        st.experimental_rerun()  # Force rerun to go back to login
 
 if __name__ == '__main__':
     main()
-
-# Jalankan aplikasi dengan perintah:
-# streamlit run App.py

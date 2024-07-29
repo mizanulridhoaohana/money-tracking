@@ -3,20 +3,24 @@
         "date": "2024-07-30",
         "sources": [
             {
-                "source": "saldo dana",
-                "amount": 9998
+                "source": "dompet",
+                "amount": 122000
             },
             {
-                "source": "saldo shopee",
-                "amount": 500000
+                "source": "dana",
+                "amount": 5000
             }
         ],
         "expenses": [
             {
                 "item": "sikat gigi",
-                "amount": 7000
+                "amount": 20000
+            },
+            {
+                "item": "sikat g",
+                "amount": 300
             }
         ],
-        "total": 7000
+        "total": 20300
     }
 ]

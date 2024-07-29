@@ -9,13 +9,16 @@ class Auth:
     users_file = 'users.json'
 
     def __init__(self):
-        if not os.path.exists(self.users_file):
-            with open(self.users_file, 'w') as file:
-                json.dump({}, file)
+        self.file_path = 'users.json'
 
     def load_users(self):
-        with open(self.users_file, 'r') as file:
-            return json.load(file)
+        if not os.path.exists(self.file_path):
+            return {}
+        with open(self.file_path, 'r') as file:
+            try:
+                return json.load(file)
+            except json.JSONDecodeError:
+                return {}  # Return an empty dictionary if JSON is invalid
 
     def save_users(self, users):
         with open(self.users_file, 'w') as file:
