@@ -3,12 +3,13 @@ import json
 import os
 
 class RiwayatPengeluaran:
-    json_file = 'expenses.json'
+    def __init__(self, email):
+        self.email = email
+        self.json_file = f'{email}_expenses.json'
 
-    @staticmethod
-    def load_data():
-        if os.path.exists(RiwayatPengeluaran.json_file):
-            with open(RiwayatPengeluaran.json_file, 'r') as file:
+    def load_data(self):
+        if os.path.exists(self.json_file):
+            with open(self.json_file, 'r') as file:
                 try:
                     data = json.load(file)
                 except json.JSONDecodeError:
@@ -17,8 +18,7 @@ class RiwayatPengeluaran:
             data = []
         return data
 
-    @staticmethod
-    def format_number(number):
+    def format_number(self, number):
         return f"{number:,}".replace(',', '.')
 
     def show(self):
