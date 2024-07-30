@@ -6,7 +6,7 @@ from catat_pengeluaran import CatatPengeluaran
 auth = Auth()
 
 def main():
-    st.title('Aplikasi Pengeluaran Uang')
+    st.title('Hemat WOYYY!! Catet disini😂')
 
     # Initialize session state
     if 'email' not in st.session_state:
